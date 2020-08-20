@@ -9,6 +9,7 @@ LOCAL_PORT = 8383
 RESOURCE_DIRECTORY = Path(__file__).resolve().parent.parent / 'resources' / 'server'
 SERVER_CERT_CHAIN = RESOURCE_DIRECTORY / 'server.intermediate.chain.pem'
 SERVER_KEY = RESOURCE_DIRECTORY / 'server.key.pem'
+SERVER_ROOT_CERT = RESOURCE_DIRECTORY / 'ca.cert.pem'
 
 class SSLServer:
     """
@@ -20,7 +21,8 @@ class SSLServer:
         """
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
         context.load_cert_chain(certfile=SERVER_CERT_CHAIN, keyfile=SERVER_KEY)
-
+        context.verify_mode = ssl.CERT_REQUIRED
+        context.load_verify_locations(SERVER_ROOT_CERT)
         # Part 1: Server
         # Add code here to request mutual authentication from the client. You'll also need to add a reference to the
         # CA cert above

@@ -7,6 +7,8 @@ LOCAL_HOST = 'localhost'
 LOCAL_PORT = 8383
 RESOURCE_DIRECTORY = Path(__file__).resolve().parent.parent / 'resources' / 'client'
 CA_CERT = RESOURCE_DIRECTORY / 'ca.cert.pem'
+CLIENT_KEY = RESOURCE_DIRECTORY / 'client.key.pem'
+CLIENT_CERT_CHAIN = RESOURCE_DIRECTORY / 'client.intermediate.chain.pem'
 
 
 def main():
@@ -25,6 +27,7 @@ def main():
     #
     # For help check out:
     #      https://github.com/mikepound/tls-exercises/blob/master/python/README.md
+    context.load_cert_chain(CLIENT_CERT_CHAIN, CLIENT_KEY)
 
     # We can wrap in an SSL context first, then connect
     conn = context.wrap_socket(sock, server_hostname="Expert TLS Server")
