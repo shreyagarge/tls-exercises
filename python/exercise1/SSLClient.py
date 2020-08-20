@@ -20,16 +20,19 @@ def main():
     #      https://github.com/mikepound/tls-exercises/blob/master/python/README.md
 
     # Create a standard TCP Socket
-    sock = None
+    sock = socket.socket(family=socket.AF_INET)
 
     # Create SSL context which holds the parameters for any sessions
-    context = None
+    context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+
+    # load CA cert
+    context.load_verify_locations(CA_CERT)
 
     # We can wrap in an SSL context first, then connect
-    conn = None
+    conn = context.wrap_socket(sock, server_hostname="Expert TLS Server")
     try:
         # Connect using conn
-
+        conn.connect((LOCAL_HOST, LOCAL_PORT))
         # The code below is complete, it will use a connection to send and receive from the server
 
         if conn is None:
